@@ -67,6 +67,9 @@ class TestMrpSaleInfo(common.TransactionCase):
         self.assertEqual(production.sale_id, self.sale_order)
         self.assertEqual(production.partner_id, self.partner)
         self.assertEqual(production.client_order_ref, self.sale_order.client_order_ref)
+        self.assertEqual(self.sale_order.production_count, 1)
+        sale_action = self.sale_order.action_view_production()
+        self.assertEqual(sale_action["res_id"], production.id)
 
     def test_mrp_workorder(self):
         prev_workorders = self.env["mrp.workorder"].search([])
