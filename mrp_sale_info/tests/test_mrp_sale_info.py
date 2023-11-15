@@ -22,6 +22,9 @@ class TestMrpSaleInfo(common.TransactionCase):
                 }
             ]
         )
+        cls.product_to_use = cls.env["product.product"].create(
+            {"name": "Material", "type": "product"}
+        )
         cls.bom = cls.env["mrp.bom"].create(
             [
                 {
@@ -35,6 +38,13 @@ class TestMrpSaleInfo(common.TransactionCase):
                                 "workcenter_id": cls.env.ref("mrp.mrp_workcenter_3").id,
                             },
                         )
+                    ],
+                    "bom_line_ids": [
+                        (
+                            0,
+                            0,
+                            {"product_id": cls.product_to_use.id, "product_qty": 1.0},
+                        ),
                     ],
                 }
             ]
@@ -71,6 +81,7 @@ class TestMrpSaleInfo(common.TransactionCase):
         self.assertEqual(self.sale_order.mrp_production_count, 1)
         sale_action = self.sale_order.action_view_mrp_production()
         self.assertEqual(sale_action["res_id"], production.id)
+        production.action_confirm()
 
     def test_mrp_workorder(self):
         prev_workorders = self.env["mrp.workorder"].search([])
@@ -81,3 +92,23 @@ class TestMrpSaleInfo(common.TransactionCase):
         self.assertEqual(workorder.sale_id, self.sale_order)
         self.assertEqual(workorder.partner_id, self.partner)
         self.assertEqual(workorder.client_order_ref, self.sale_order.client_order_ref)
+
+    def test_orderpoint(self):
+        """Test if orderpoint MO generation still works well"""
+        prev_productions = self.env["mrp.production"].search([])
+        warehouse = self.env["stock.warehouse"].search([], limit=1)
+        orderpoint = self.env["stock.warehouse.orderpoint"].create(
+            {
+                "name": "replenish product",
+                "location_id": warehouse.lot_stock_id.id,
+                "product_id": self.product.id,
+                "product_min_qty": 10,
+                "product_max_qty": 100,
+            }
+        )
+        orderpoint._procure_orderpoint_confirm(
+            company_id=orderpoint.company_id, raise_user_error=False
+        )
+        production = self.env["mrp.production"].search([]) - prev_productions
+        self.assertEqual(len(production), 1)
+        production.action_confirm()
