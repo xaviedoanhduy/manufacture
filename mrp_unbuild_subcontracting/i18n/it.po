@@ -26,30 +26,19 @@ msgstr ""
 "sui componenti."
 
 #. module: mrp_unbuild_subcontracting
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_mrp_unbuild__display_name
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_stock_move__display_name
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_stock_picking__display_name
-msgid "Display Name"
-msgstr "Nome visualizzato"
-
-#. module: mrp_unbuild_subcontracting
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_mrp_unbuild__id
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_stock_move__id
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_stock_picking__id
-msgid "ID"
-msgstr "ID"
-
-#. module: mrp_unbuild_subcontracting
 #: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_mrp_unbuild__is_subcontracted
-msgid "Is Subcontracted"
-msgstr "In conto lavoro"
+msgid "Is Subcontracted?"
+msgstr ""
 
 #. module: mrp_unbuild_subcontracting
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_mrp_unbuild____last_update
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_stock_move____last_update
-#: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_stock_picking____last_update
-msgid "Last Modified on"
-msgstr "Ultima modifica il"
+#. odoo-python
+#: code:addons/mrp_unbuild_subcontracting/models/stock_picking.py:0
+#, python-format
+msgid ""
+"It's not possible to create the subcontracting unbuild order\n"
+"The subcontract move %(smn)s is linked with more than one manufacturing "
+"order: %(jmm)s"
+msgstr ""
 
 #. module: mrp_unbuild_subcontracting
 #: model_terms:ir.actions.act_window,help:mrp_unbuild_subcontracting.mrp_unbuild_subcontracted
@@ -68,10 +57,11 @@ msgstr "Ordini di smontaggio in conto lavoro"
 
 #. module: mrp_unbuild_subcontracting
 #: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_stock_picking__subcontracted_unbuild_ids
-msgid "Suncontracted unbuilds"
-msgstr "Smontaggi in conto lavoro"
+msgid "Subcontracted unbuilds"
+msgstr ""
 
 #. module: mrp_unbuild_subcontracting
+#. odoo-python
 #: code:addons/mrp_unbuild_subcontracting/models/stock_move.py:0
 #, python-format
 msgid "To subcontract, use a planned transfer."
@@ -92,3 +82,18 @@ msgstr "Ordine di smontaggio"
 #: model:ir.actions.act_window,name:mrp_unbuild_subcontracting.mrp_unbuild_subcontracted
 msgid "Unbuild Orders - Subcontracted"
 msgstr "Ordini smontaggio - In conto lavoro"
+
+#~ msgid "Display Name"
+#~ msgstr "Nome visualizzato"
+
+#~ msgid "ID"
+#~ msgstr "ID"
+
+#~ msgid "Is Subcontracted"
+#~ msgstr "In conto lavoro"
+
+#~ msgid "Last Modified on"
+#~ msgstr "Ultima modifica il"
+
+#~ msgid "Suncontracted unbuilds"
+#~ msgstr "Smontaggi in conto lavoro"
