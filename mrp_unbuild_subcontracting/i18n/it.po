@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"PO-Revision-Date: 2022-12-23 13:45+0000\n"
+"PO-Revision-Date: 2024-11-12 20:06+0000\n"
 "Last-Translator: mymage <stefano.consolaro@mymage.it>\n"
 "Language-Team: none\n"
 "Language: it\n"
@@ -14,7 +14,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 5.6.2\n"
 
 #. module: mrp_unbuild_subcontracting
 #: model_terms:ir.actions.act_window,help:mrp_unbuild_subcontracting.mrp_unbuild_subcontracted
@@ -28,7 +28,7 @@ msgstr ""
 #. module: mrp_unbuild_subcontracting
 #: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_mrp_unbuild__is_subcontracted
 msgid "Is Subcontracted?"
-msgstr ""
+msgstr "In conto lavoro?"
 
 #. module: mrp_unbuild_subcontracting
 #. odoo-python
@@ -39,6 +39,9 @@ msgid ""
 "The subcontract move %(smn)s is linked with more than one manufacturing "
 "order: %(jmm)s"
 msgstr ""
+"Non è possibile creare l'ordine di smontaggio del conto lavoro\n"
+"Lo spostamento del conto lavoro %(smn)s è collegato a più di un ordine di "
+"produzione: %(jmm)s"
 
 #. module: mrp_unbuild_subcontracting
 #: model_terms:ir.actions.act_window,help:mrp_unbuild_subcontracting.mrp_unbuild_subcontracted
@@ -58,7 +61,7 @@ msgstr "Ordini di smontaggio in conto lavoro"
 #. module: mrp_unbuild_subcontracting
 #: model:ir.model.fields,field_description:mrp_unbuild_subcontracting.field_stock_picking__subcontracted_unbuild_ids
 msgid "Subcontracted unbuilds"
-msgstr ""
+msgstr "Smontaggi conto lavoro"
 
 #. module: mrp_unbuild_subcontracting
 #. odoo-python
