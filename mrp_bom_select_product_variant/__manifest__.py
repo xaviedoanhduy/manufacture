@@ -5,7 +5,7 @@
 {
     "name": "MRP BoM Select Product Variant",
     "summary": "Favors Product variant selection for BOM creation.",
-    "version": "16.0.1.0.0",
+    "version": "18.0.1.0.0",
     "author": "GRAP, Odoo Community Association (OCA)",
     "category": "Manufacturing",
     "depends": ["mrp"],
