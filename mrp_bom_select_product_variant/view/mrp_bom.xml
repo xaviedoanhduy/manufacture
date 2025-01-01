@@ -5,7 +5,6 @@ Copyright (C) 2024 - Today: GRAP (http://www.grap.coop)
 License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
-
     <!-- ************************************************************ -->
     <!-- MRP Bill of Materials - Form -->
     <!-- ************************************************************ -->
@@ -34,17 +33,17 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">mrp.bom</field>
         <field name="inherit_id" ref="mrp.mrp_bom_tree_view" />
         <field name="arch" type="xml">
-          <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
-          <!-- Hide it to avoid duplication -->
-          <xpath expr="//field[@name='product_id']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
-          <xpath expr="//field[@name='sequence']" position="after">
-              <field name="product_tmpl_id" optional="hide" />
-              <field name="product_id" />
-          </xpath>
+            <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- Hide it to avoid duplication -->
+            <xpath expr="//field[@name='product_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sequence']" position="after">
+                <field name="product_tmpl_id" optional="hide" />
+                <field name="product_id" />
+            </xpath>
         </field>
     </record>
 
@@ -56,26 +55,25 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">mrp.bom</field>
         <field name="inherit_id" ref="mrp.view_mrp_bom_filter" />
         <field name="arch" type="xml">
-          <!-- filter -->
-          <xpath expr="//field[@name='product_tmpl_id']" position="after">
-            <field name="product_id" />
-          </xpath>
-          <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
-          <!-- group by -->
-          <xpath expr="//filter[@name='product']" position="after">
-            <filter
+            <!-- filter -->
+            <xpath expr="//field[@name='product_tmpl_id']" position="after">
+                <field name="product_id" />
+            </xpath>
+            <xpath expr="//field[@name='product_tmpl_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <!-- group by -->
+            <xpath expr="//filter[@name='product']" position="after">
+                <filter
                     string="Product Variant"
                     name="product_variant"
                     domain="[]"
                     context="{'group_by': 'product_id'}"
                 />
-          </xpath>
-          <xpath expr="//filter[@name='product']" position="attributes">
-              <attribute name="invisible">1</attribute>
-          </xpath>
+            </xpath>
+            <xpath expr="//filter[@name='product']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
         </field>
     </record>
-
 </odoo>

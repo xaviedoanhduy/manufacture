@@ -7,7 +7,7 @@ from odoo.tests.common import TransactionCase
 
 class TestBomProductVariant(TransactionCase):
     def setUp(self):
-        super(TestBomProductVariant, self).setUp()
+        super().setUp()
         self.product_product_desk = self.env.ref("product.product_product_3")
         self.bom_desk = self.env.ref("mrp.mrp_bom_manufacture")
 
