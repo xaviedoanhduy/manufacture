@@ -7,7 +7,7 @@ from odoo.tests.common import TransactionCase
 
 class MrpProductionCase(TransactionCase):
     def setUp(self):
-        super(MrpProductionCase, self).setUp()
+        super().setUp()
         self.product_model = self.env["product.product"]
         self.bom_model = self.env["mrp.bom"]
         self.route_model = self.env["stock.location.route"]
