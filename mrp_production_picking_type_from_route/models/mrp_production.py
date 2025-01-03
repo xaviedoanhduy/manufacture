@@ -7,23 +7,20 @@ from odoo import api, models
 class MrpProduction(models.Model):
     _inherit = "mrp.production"
 
-    # Skip picking_type_id as a onchange trigger, even though the
-    # extended method is an onchange for picking_type_id too.
-    # If triggered also from picking_type_id changes, it would be impossible
-    # to adjust picking_type_id manually.
-    @api.onchange("product_id", "company_id")
-    def _onchange_product_id(self):
-        res = super()._onchange_product_id()
-        if self.product_id:
-            base_domain = [
-                ("action", "=", "manufacture"),
-                "|",
-                ("company_id", "=", False),
-                ("company_id", "child_of", self.company_id.id),
-            ]
-            res_rule = self.env["procurement.group"]._search_rule(
-                False, False, self.product_id, False, base_domain
-            )
-            if res_rule:
-                self.picking_type_id = res_rule.picking_type_id
+    @api.depends("company_id", "bom_id", "product_id")
+    def _compute_picking_type_id(self):
+        res = super()._compute_picking_type_id()
+        for mo in self:
+            if mo.product_id:
+                base_domain = [
+                    ("action", "=", "manufacture"),
+                    "|",
+                    ("company_id", "=", False),
+                    ("company_id", "child_of", mo.company_id.id),
+                ]
+                res_rule = self.env["procurement.group"]._search_rule(
+                    False, False, mo.product_id, False, base_domain
+                )
+                if res_rule:
+                    mo.picking_type_id = res_rule.picking_type_id
         return res

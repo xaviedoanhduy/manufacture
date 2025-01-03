@@ -10,7 +10,7 @@ class MrpProductionCase(TransactionCase):
         super().setUp()
         self.product_model = self.env["product.product"]
         self.bom_model = self.env["mrp.bom"]
-        self.route_model = self.env["stock.location.route"]
+        self.route_model = self.env["stock.route"]
         self.loc_model = self.env["stock.location"]
         self.op_type_model = self.env["stock.picking.type"]
 
@@ -50,7 +50,7 @@ class MrpProductionCase(TransactionCase):
                             "action": "manufacture",
                             "picking_type_id": self.op_type_2.id,
                             "location_src_id": self.source_loc_2.id,
-                            "location_id": self.wh.lot_stock_id.id,
+                            "location_dest_id": self.wh.lot_stock_id.id,
                         },
                     )
                 ],
