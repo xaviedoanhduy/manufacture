@@ -87,6 +87,14 @@ Contributors
 
 -  Sébastien Alix <sebastien.alix@camptocamp.com>
 -  Simone Orsi <simone.orsi@camptocamp.com>
+-  Chau Le <chaulb@trobz.com>
+
+Other credits
+-------------
+
+The development of this module has been financially supported by:
+
+-  Camptocamp
 
 Maintainers
 -----------

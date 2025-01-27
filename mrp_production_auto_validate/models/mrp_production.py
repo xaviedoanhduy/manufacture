@@ -3,7 +3,7 @@
 
 import logging
 
-from odoo import _, api, exceptions, fields, models, tools
+from odoo import api, exceptions, fields, models, tools
 
 _logger = logging.getLogger(__name__)
 
@@ -12,35 +12,41 @@ class MrpProduction(models.Model):
     _inherit = "mrp.production"
 
     auto_validate = fields.Boolean(
-        string="Auto Validate",
         compute="_compute_auto_validate",
         store=True,
-        states={"draft": [("readonly", False)]},
     )
 
     @api.constrains("bom_id", "auto_validate", "product_qty")
     def check_bom_auto_validate(self):
+        bypass_check = self.env.context.get("disable_check_mo_auto_validate")
+        if bypass_check:
+            return
+
         for mo in self:
-            # FIXME: Handle different UOM between BOM and MO
-            qty_ok = (
-                tools.float_compare(
-                    mo.product_qty,
-                    mo.bom_id.product_qty,
-                    precision_rounding=mo.product_uom_id.rounding,
+            if mo.bom_id:
+                qty_in_mo_uom = mo.bom_id.product_uom_id._compute_quantity(
+                    mo.bom_id.product_qty, mo.product_uom_id
                 )
-                == 0
-            )
-            bypass_check = self.env.context.get("disable_check_mo_auto_validate")
-            if bypass_check:
-                return
-            if mo.bom_id and mo.auto_validate and not qty_ok:
-                raise exceptions.ValidationError(
-                    _(
-                        "The quantity to produce is restricted to {qty} "
-                        "as the BoM is configured with the "
-                        "'Order Auto Validation' option."
-                    ).format(qty=mo.bom_id.product_qty)
+
+                qty_ok = (
+                    tools.float_compare(
+                        mo.product_qty,
+                        qty_in_mo_uom,
+                        precision_rounding=mo.product_uom_id.rounding,
+                    )
+                    == 0
                 )
+
+                if mo.auto_validate and not qty_ok:
+                    raise exceptions.ValidationError(
+                        self.env._(
+                            "The quantity to produce is restricted to %(qty)s %(uom)s "
+                            "as the BoM is configured with the "
+                            "'Order Auto Validation' option.",
+                            qty=mo.bom_id.product_qty,
+                            uom=mo.bom_id.product_uom_id.name,
+                        )
+                    )
 
     @api.depends("bom_id.mo_auto_validation", "state")
     def _compute_auto_validate(self):
@@ -79,12 +85,13 @@ class MrpProduction(models.Model):
             return True
         return handler(res)
 
-    def _handle_wiz_mrp_immediate_production(self, action):
+    def _handle_wiz_mrp_batch_produce(self, action):
         wiz_model = self.env[action["res_model"]].with_context(
             **action.get("context", {})
         )
         wiz = wiz_model.create({})
-        return wiz.process()
+        wiz.action_generate_production_text()
+        return wiz.action_done()
 
     def _handle_wiz_mrp_production_backorder(self, action):
         wiz_model = self.env[action["res_model"]].with_context(
@@ -153,15 +160,15 @@ class MrpProduction(models.Model):
                 procure_qty = values.get("product_qty")
                 values["product_qty"] = bom_qty
                 values["product_uom_id"] = bom_uom.id
-                msg = _(
-                    "Quantity in procurement (%s %s) was increased to %s %s due to auto "
+                msg = self.env._(
+                    "Quantity in procurement (%(product_qty)s %(product_uom_name)s) "
+                    "was increased to %(bom_qty)s %(bom_uom_name)s due to auto "
                     "validation feature preventing to create an MO with a different "
-                    "qty than defined on the BOM."
-                ) % (
-                    procure_qty,
-                    create_uom.display_name,
-                    bom_qty,
-                    bom_uom.display_name,
+                    "qty than defined on the BOM.",
+                    product_qty=procure_qty,
+                    product_uom_name=create_uom.display_name,
+                    bom_qty=bom_qty,
+                    bom_uom_name=bom_uom.display_name,
                 )
                 messages_to_post[len(new_values_list)] = msg
                 new_values_list.append(values)
@@ -175,16 +182,16 @@ class MrpProduction(models.Model):
                 new_values = values.copy()
                 new_values["product_qty"] = bom_qty
                 new_values["product_uom_id"] = bom_uom.id
-                msg = _(
-                    "Quantity in procurement (%s %s) was split to multiple production "
-                    "orders of %s %s due to auto validation feature preventing to "
-                    "set a quantity to produce different than the quantity defined "
-                    "on the Bill of Materials."
-                ) % (
-                    values.get("product_qty"),
-                    create_uom.display_name,
-                    bom_qty,
-                    bom_uom.display_name,
+                msg = self.env._(
+                    "Quantity in procurement (%(product_qty)s %(product_uom_name)s) "
+                    "was split to multiple production orders of %(bom_qty)s "
+                    "%(bom_uom_name)s due to auto validation feature preventing to set "
+                    "a quantity to produce different than the quantity defined "
+                    "on the Bill of Materials.",
+                    product_qty=values.get("product_qty"),
+                    product_uom_name=create_uom.display_name,
+                    bom_qty=bom_qty,
+                    bom_uom_name=bom_uom.display_name,
                 )
                 messages_to_post[len(new_values_list)] = msg
                 new_values_list.append(new_values)

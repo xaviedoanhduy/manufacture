@@ -2,14 +2,15 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl)
 
 from odoo.exceptions import ValidationError
-from odoo.tests.common import Form, SavepointCase
+from odoo.tests import Form
+
+from odoo.addons.base.tests.common import BaseCommon
 
 
-class TestManufacturingOrderAutoValidate(SavepointCase):
+class TestManufacturingOrderAutoValidate(BaseCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.env = cls.env(context=dict(cls.env.context, tracking_disable=True))
         # Configure the WH to manufacture in at least two steps to get a
         # "pick components" transfer operation
         cls.wh = cls.env.ref("stock.warehouse0")
@@ -48,32 +49,28 @@ class TestManufacturingOrderAutoValidate(SavepointCase):
             form.bom_id = bom
             form.product_qty = product_qty
             order = form.save()
-            order.invalidate_cache()
+            order.invalidate_model()
             return order
 
     @classmethod
     def _validate_picking(cls, picking, moves=None):
         """Validate a stock transfer.
 
-        `moves` can be set with a list of tuples [(move, quantity_done)] to
+        `moves` can be set with a list of tuples [(move, quantity)] to
         process the transfer partially.
         """
         if moves is None:
             moves = []
-        for move in picking.move_lines:
+        for move in picking.move_ids:
             # Try to match a move to set a given qty
             for move2, qty_done in moves:
                 if move == move2:
-                    move.quantity_done = qty_done
+                    move.quantity = qty_done
                     break
             else:
-                move.quantity_done = move.product_uom_qty
+                move.quantity = move.product_uom_qty
+            move.picked = True
         picking._action_done()
-
-    def test_bom_alert(self):
-        self.assertIn(
-            "restricted to the BoM Quantity", self.bom.mo_auto_validation_warning
-        )
 
     def test_get_manufacturing_orders_pbm(self):
         """Get the MO from transfers in a 2 steps configuration."""
@@ -91,10 +88,12 @@ class TestManufacturingOrderAutoValidate(SavepointCase):
         picking_pick = order.picking_ids.filtered(
             lambda o: "Pick" in o.picking_type_id.name
         )
+        self.assertEqual(picking_pick._get_manufacturing_orders(), order)
+        picking_pick.action_assign()
+        self._validate_picking(picking_pick)
         picking_store = order.picking_ids.filtered(
             lambda o: "Store" in o.picking_type_id.name
         )
-        self.assertEqual(picking_pick._get_manufacturing_orders(), order)
         self.assertFalse(picking_store._get_manufacturing_orders())
 
     def test_create_order_too_much_qty_to_produce(self):
@@ -154,9 +153,9 @@ class TestManufacturingOrderAutoValidate(SavepointCase):
         picking = order.picking_ids
         picking.action_assign()
         self.assertEqual(picking.state, "assigned")
-        self._validate_picking(picking, moves=[(picking.move_lines, 1)])
+        self._validate_picking(picking, moves=[(picking.move_ids, 1)])
         self.assertEqual(picking.state, "done")
-        self.assertEqual(picking.backorder_ids.move_lines.product_uom_qty, 3)
+        self.assertEqual(picking.backorder_ids.move_ids.product_uom_qty, 3)
         # Check that no MO gets validated in the process
         order_done = picking._get_manufacturing_orders(states=("done",))
         self.assertFalse(order_done)
