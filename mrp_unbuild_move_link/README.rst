@@ -61,6 +61,10 @@ Contributors
 
    -  Thiago Mulero <thiago.mulero@forgeflow.com>
 
+-  `Trobz <https://www.trobz.com>`__:
+
+   -  Do Anh Duy <duyda@trobz.com>
+
 Maintainers
 -----------
 

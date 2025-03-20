@@ -4,21 +4,14 @@ from odoo.addons.mrp.tests.common import TestMrpCommon
 
 
 class TestUnbuild(TestMrpCommon):
-    def setUp(self):
-        super().setUp()
-        self.stock_location = self.env.ref("stock.stock_location_stock")
-        self.env.ref("base.group_user").write(
-            {"implied_ids": [(4, self.env.ref("stock.group_production_lot").id)]}
-        )
-
     def test_unbuild_with_move_mrp_link(self):
         """This test creates an Unbuild order from a Manufacturing order and then
         check if the unbuild order has the id of the manufacturing order stock move.
         """
         mo, bom, p_final, p1, p2 = self.generate_mo()
-
-        self.env["stock.quant"]._update_available_quantity(p1, self.stock_location, 100)
-        self.env["stock.quant"]._update_available_quantity(p2, self.stock_location, 5)
+        location = self.StockLocationObj.browse(self.stock_location)
+        self.env["stock.quant"]._update_available_quantity(p1, location, 100)
+        self.env["stock.quant"]._update_available_quantity(p2, location, 5)
         mo.action_assign()
 
         mo_form = Form(mo)
