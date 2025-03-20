@@ -46,7 +46,5 @@ class StockMove(models.Model):
                     *list(subcontract_details_per_picking.keys())
                 ).action_assign()
             return res
-        result = super(StockMove, self)._action_confirm(
-            merge=merge, merge_into=merge_into
-        )
+        result = super()._action_confirm(merge=merge, merge_into=merge_into)
         return result

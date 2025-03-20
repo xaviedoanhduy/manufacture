@@ -57,7 +57,7 @@ class StockPicking(models.Model):
             self.subcontracted_unbuild_ids |= unbuild
 
     def _action_done(self):
-        res = super(StockPicking, self)._action_done()
+        res = super()._action_done()
         for picking in self:
             unbuilds_to_done = picking.subcontracted_unbuild_ids.filtered(
                 lambda x: x.state == "draft"
@@ -92,7 +92,7 @@ class StockPicking(models.Model):
         return res
 
     def action_view_stock_valuation_layers(self):
-        action = super(StockPicking, self).action_view_stock_valuation_layers()
+        action = super().action_view_stock_valuation_layers()
         subcontracted_unbuilds = self.subcontracted_unbuild_ids
         if not subcontracted_unbuilds:
             return action

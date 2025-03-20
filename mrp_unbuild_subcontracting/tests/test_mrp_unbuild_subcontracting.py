@@ -227,7 +227,7 @@ class TestSubcontractingPurchaseFlows(TransactionCase):
 
 class TestSubcontractingTracking(TransactionCase):
     def setUp(self):
-        super(TestSubcontractingTracking, self).setUp()
+        super().setUp()
         # 1: Create a subcontracting partner
         main_company_1 = self.env["res.partner"].create({"name": "main_partner"})
         self.subcontractor_partner1 = self.env["res.partner"].create(

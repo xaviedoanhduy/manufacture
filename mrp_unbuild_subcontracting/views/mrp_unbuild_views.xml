@@ -11,9 +11,10 @@
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('is_subcontracted', '=', True)]</field>
         <field name="help" type="html">
-          <p class="o_view_nocontent_smiling_face">
+            <p class="o_view_nocontent_smiling_face">
             No unbuild order found
-          </p><p>
+          </p>
+            <p>
             An unbuild order is used to break down a finished product into its components.
           </p>
         </field>
