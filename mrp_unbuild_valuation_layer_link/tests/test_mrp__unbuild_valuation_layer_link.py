@@ -7,19 +7,19 @@ class TestUnbuild(TestMrpCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.stock_location = cls.env.ref("stock.stock_location_stock")
         cls.env.ref("base.group_user").write(
             {"implied_ids": [(4, cls.env.ref("stock.group_production_lot").id)]}
         )
 
     def test_unbuild_with_valuation_layer(self):
-        """This test creates an Unbuild order from a Manufacturing order and then check if the
-        valuation button links to the valuation layer of the order.
+        """This test creates an Unbuild order from a Manufacturing order and
+        then check if the valuation button links to the valuation layer of the order.
         """
         mo, bom, p_final, p1, p2 = self.generate_mo()
 
-        self.env["stock.quant"]._update_available_quantity(p1, self.stock_location, 100)
-        self.env["stock.quant"]._update_available_quantity(p2, self.stock_location, 5)
+        stock_location = self.StockLocationObj.browse(self.stock_location)
+        self.env["stock.quant"]._update_available_quantity(p1, stock_location, 100)
+        self.env["stock.quant"]._update_available_quantity(p2, stock_location, 5)
         mo.action_assign()
 
         mo_form = Form(mo)
