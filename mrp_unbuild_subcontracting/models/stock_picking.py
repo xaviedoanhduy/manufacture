@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import _, fields, models
+from odoo import Command, fields, models
 from odoo.exceptions import UserError
 from odoo.osv.expression import OR
 
@@ -20,12 +20,13 @@ class StockPicking(models.Model):
         )
         if len(mos) > 1:
             raise UserError(
-                _(
+                self.env._(
                     "It's not possible to create the subcontracting unbuild order\n"
                     "The subcontract move %(smn)s is linked with more than "
-                    "one manufacturing order: %(jmm)s"
+                    "one manufacturing order: %(jmm)s",
+                    smn=subcontract_move.name,
+                    jmm=",".join(mos.mapped("name")),
                 )
-                % {"smn": subcontract_move.name, "jmm": ",".join(mos.mapped("name"))}
             )
         vals = {
             "company_id": subcontract_move.company_id.id,
@@ -73,12 +74,12 @@ class StockPicking(models.Model):
                 unbuild.with_context(
                     subcontract_move_id=True, mo_ids_to_backorder=unbuild_ids_backorder
                 ).action_validate()
-            moves = picking.move_ids.filtered(lambda move: move.is_subcontract)
+            moves = picking.move_ids.filtered("is_subcontract")
             finished_move = unbuilds_to_done.produce_line_ids.filtered(
-                lambda m: m.product_id.id in moves.mapped("product_id").ids
+                lambda m, ms=moves: m.product_id.id in ms.mapped("product_id").ids
             )
             for move in moves:
-                finished_move.write({"move_dest_ids": [(4, move.id, False)]})
+                finished_move.write({"move_dest_ids": [Command.link(move.id)]})
             # For concistency, set the date on production move before the date
             # on picking. (Traceability report + Product Moves menu item)
             minimum_date = min(picking.move_line_ids.mapped("date"))

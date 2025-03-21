@@ -1,39 +1,41 @@
 from odoo.exceptions import UserError
+from odoo.fields import Command
 from odoo.tests import Form, TransactionCase
 
 
 class TestSubcontractingPurchaseFlows(TransactionCase):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
 
-        self.subcontractor = self.env["res.partner"].create(
+        cls.subcontractor = cls.env["res.partner"].create(
             {"name": "SuperSubcontractor"}
         )
 
-        self.finished, self.compo = self.env["product.product"].create(
+        cls.finished, cls.compo = cls.env["product.product"].create(
             [
                 {
                     "name": "SuperProduct",
-                    "type": "product",
+                    "type": "consu",
+                    "is_storable": True,
                 },
                 {
                     "name": "Component",
                     "type": "consu",
+                    "is_storable": True,
                 },
             ]
         )
 
-        self.bom = self.env["mrp.bom"].create(
+        cls.bom = cls.env["mrp.bom"].create(
             {
-                "product_tmpl_id": self.finished.product_tmpl_id.id,
+                "product_tmpl_id": cls.finished.product_tmpl_id.id,
                 "type": "subcontract",
-                "subcontractor_ids": [(6, 0, self.subcontractor.ids)],
+                "subcontractor_ids": [Command.set(cls.subcontractor.ids)],
                 "bom_line_ids": [
-                    (
-                        0,
-                        0,
+                    Command.create(
                         {
-                            "product_id": self.compo.id,
+                            "product_id": cls.compo.id,
                             "product_qty": 1,
                         },
                     )
@@ -51,9 +53,7 @@ class TestSubcontractingPurchaseFlows(TransactionCase):
             {
                 "partner_id": self.subcontractor.id,
                 "order_line": [
-                    (
-                        0,
-                        0,
+                    Command.create(
                         {
                             "name": self.finished.name,
                             "product_id": self.finished.id,
@@ -71,7 +71,8 @@ class TestSubcontractingPurchaseFlows(TransactionCase):
         self.assertTrue(mo)
 
         receipt = po.picking_ids
-        receipt.move_ids.quantity_done = 10
+        receipt.move_ids.quantity = 10
+        receipt.move_ids.picked = True
         receipt.button_validate()
 
         return_form = Form(
@@ -79,13 +80,12 @@ class TestSubcontractingPurchaseFlows(TransactionCase):
                 active_id=receipt.id, active_model="stock.picking"
             )
         )
-        with return_form.product_return_moves.edit(0) as line:
-            line.quantity = 3
         return_wizard = return_form.save()
-        return_id, _ = return_wizard._create_returns()
-
-        return_picking = self.env["stock.picking"].browse(return_id)
-        return_picking.move_ids.quantity_done = 3
+        return_wizard.product_return_moves.quantity = 3
+        return_wizard.product_return_moves.to_refund = True
+        return_picking = return_wizard._create_return()
+        return_picking.move_ids.quantity = 3
+        return_picking.move_ids.picked = True
         subcontractor_location = self.subcontractor.property_stock_subcontractor
         unbuild = self.env["mrp.unbuild"].search([("bom_id", "=", self.bom.id)])
 
@@ -169,7 +169,7 @@ class TestSubcontractingPurchaseFlows(TransactionCase):
         self.assertTrue(mo)
 
         receipt = po.picking_ids.filtered(lambda x: x.state != "done")
-        receipt.move_ids.quantity_done = 3
+        receipt.move_ids.quantity = 3
         result_dict = receipt.button_validate()
         self.env["stock.backorder.confirmation"].with_context(
             **result_dict["context"]
@@ -177,8 +177,7 @@ class TestSubcontractingPurchaseFlows(TransactionCase):
         self.assertEqual(po.order_line.qty_received, 3)
 
         receipt = po.picking_ids.filtered(lambda x: x.state != "done")
-        receipt.move_ids.quantity_done = 3
-        picking_to_return = receipt
+        receipt.move_ids.quantity = 3
         result_dict = receipt.button_validate()
         self.env["stock.backorder.confirmation"].with_context(
             **result_dict["context"]
@@ -186,7 +185,7 @@ class TestSubcontractingPurchaseFlows(TransactionCase):
         self.assertEqual(po.order_line.qty_received, 6)
 
         receipt = po.picking_ids.filtered(lambda x: x.state != "done")
-        receipt.move_ids.quantity_done = 3
+        receipt.move_ids.quantity = 3
         result_dict = receipt.button_validate()
         self.env["stock.backorder.confirmation"].with_context(
             **result_dict["context"]
@@ -195,87 +194,71 @@ class TestSubcontractingPurchaseFlows(TransactionCase):
 
         self.assertEqual(len(po.picking_ids), 4)
 
-        return_wizard = (
-            self.env["stock.return.picking"]
-            .with_context(
-                active_id=picking_to_return.id, active_ids=picking_to_return.ids
-            )
-            .create(
-                {
-                    "location_id": picking_to_return.location_id.id,
-                    "picking_id": picking_to_return.id,
-                }
+        return_form = Form(
+            self.env["stock.return.picking"].with_context(
+                active_id=receipt.id, active_model="stock.picking"
             )
         )
-        return_wizard._onchange_picking_id()
+        return_wizard = return_form.save()
         with self.assertRaises(UserError):
-            return_id, _ = return_wizard._create_returns()
-
-        # This part cannot be tested since we cannot unbuild
-        # subcontracting orders with more than one origin.
-        #
-        # return_picking = self.env["stock.picking"].browse(return_id)
-        # return_picking.move_ids.quantity_done = 3
-        # return_picking.button_validate()
-        #
-        # self.assertEqual(po.order_line.qty_received, 6)
-        #
-        # mo = picking_to_return.mapped("move_ids.move_orig_ids.production_id")
-        # unbuild = self.env["mrp.unbuild"].search([("mo_id", "in", mo.ids)])
-        # self.assertTrue(unbuild.exists())
+            return_wizard._create_return()
 
 
 class TestSubcontractingTracking(TransactionCase):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
         # 1: Create a subcontracting partner
-        main_company_1 = self.env["res.partner"].create({"name": "main_partner"})
-        self.subcontractor_partner1 = self.env["res.partner"].create(
+        main_company_1 = cls.env["res.partner"].create({"name": "main_partner"})
+        cls.subcontractor_partner1 = cls.env["res.partner"].create(
             {
                 "name": "Subcontractor 1",
                 "parent_id": main_company_1.id,
-                "company_id": self.env.ref("base.main_company").id,
+                "company_id": cls.env.ref("base.main_company").id,
             }
         )
 
         # 2. Create a BOM of subcontracting type
         # 2.1. Comp1 has tracking by lot
-        self.comp1_sn = self.env["product.product"].create(
+        cls.comp1_sn = cls.env["product.product"].create(
             {
                 "name": "Component1",
-                "type": "product",
-                "categ_id": self.env.ref("product.product_category_all").id,
+                "type": "consu",
+                "is_storable": True,
+                "categ_id": cls.env.ref("product.product_category_all").id,
                 "tracking": "serial",
             }
         )
-        self.comp2 = self.env["product.product"].create(
+        cls.comp2 = cls.env["product.product"].create(
             {
                 "name": "Component2",
-                "type": "product",
-                "categ_id": self.env.ref("product.product_category_all").id,
+                "type": "consu",
+                "is_storable": True,
+                "categ_id": cls.env.ref("product.product_category_all").id,
             }
         )
 
         # 2.2. Finished prodcut has tracking by serial number
-        self.finished_product = self.env["product.product"].create(
+        cls.finished_product = cls.env["product.product"].create(
             {
                 "name": "finished",
-                "type": "product",
-                "categ_id": self.env.ref("product.product_category_all").id,
+                "type": "consu",
+                "is_storable": True,
+                "categ_id": cls.env.ref("product.product_category_all").id,
                 "tracking": "lot",
             }
         )
-        bom_form = Form(self.env["mrp.bom"])
+        bom_form = Form(cls.env["mrp.bom"])
         bom_form.type = "subcontract"
-        bom_form.subcontractor_ids.add(self.subcontractor_partner1)
-        bom_form.product_tmpl_id = self.finished_product.product_tmpl_id
+        bom_form.subcontractor_ids.add(cls.subcontractor_partner1)
+        bom_form.product_tmpl_id = cls.finished_product.product_tmpl_id
         with bom_form.bom_line_ids.new() as bom_line:
-            bom_line.product_id = self.comp1_sn
+            bom_line.product_id = cls.comp1_sn
             bom_line.product_qty = 1
         with bom_form.bom_line_ids.new() as bom_line:
-            bom_line.product_id = self.comp2
+            bom_line.product_id = cls.comp2
             bom_line.product_qty = 1
-        self.bom_tracked = bom_form.save()
+        cls.bom_tracked = bom_form.save()
 
     def test_purchase_and_return_with_serial_numbers(self):
         """
@@ -362,10 +345,10 @@ class TestSubcontractingTracking(TransactionCase):
         with return_form.product_return_moves.edit(0) as line:
             line.quantity = 1
         return_wizard = return_form.save()
-        return_id, _ = return_wizard._create_returns()
+        return_picking = return_wizard._create_return()
 
-        return_picking = self.env["stock.picking"].browse(return_id)
-        return_picking.move_ids.quantity_done = 1
+        return_picking.move_ids.quantity = 1
+        return_picking.move_ids.picked = True
         subcontractor_location = (
             self.subcontractor_partner1.property_stock_subcontractor
         )

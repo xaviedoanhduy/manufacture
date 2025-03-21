@@ -60,10 +60,14 @@ Authors
 Contributors
 ------------
 
--  `ForgeFlow <https://www.forgeflow.com>`__:
+- `ForgeFlow <https://www.forgeflow.com>`__:
 
-   -  Thiago Mulero <thiago.mulero@forgeflow.com>
-   -  Bernat Puig <bernat.puig@forgeflow.com>
+  - Thiago Mulero <thiago.mulero@forgeflow.com>
+  - Bernat Puig <bernat.puig@forgeflow.com>
+
+- `Trobz <https://www.trobz.com>`__:
+
+  - Do Anh Duy <duyda@trobz.com>
 
 Maintainers
 -----------
