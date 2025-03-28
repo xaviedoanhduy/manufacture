@@ -1,7 +1,8 @@
 [project]
 name = "odoo-addons-oca-manufacture"
-version = "18.0.20250212.0"
+version = "18.0.20250328.0"
 dependencies = [
+    "odoo-addon-mrp_lot_production_date==18.0.*",
     "odoo-addon-mrp_multi_level==18.0.*",
     "odoo-addon-mrp_package_propagation==18.0.*",
     "odoo-addon-mrp_production_note==18.0.*",
