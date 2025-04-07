@@ -1,6 +1,6 @@
 [project]
 name = "odoo-addons-oca-manufacture"
-version = "18.0.20250404.1"
+version = "18.0.20250407.0"
 dependencies = [
     "odoo-addon-account_move_line_mrp_info==18.0.*",
     "odoo-addon-mrp_bom_image==18.0.*",
@@ -10,6 +10,7 @@ dependencies = [
     "odoo-addon-mrp_multi_level_estimate==18.0.*",
     "odoo-addon-mrp_package_propagation==18.0.*",
     "odoo-addon-mrp_production_note==18.0.*",
+    "odoo-addon-mrp_sale_info==18.0.*",
     "odoo-addon-mrp_warehouse_calendar==18.0.*",
 ]
 classifiers=[
