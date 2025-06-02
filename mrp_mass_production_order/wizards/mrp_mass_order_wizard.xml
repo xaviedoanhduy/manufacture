@@ -22,10 +22,10 @@
                 <notebook>
                     <page string="MRP Production Orders">
                         <field name="mrp_production_order_entries">
-                            <tree editable="bottom">
+                            <list editable="bottom">
                                 <field
                                     name="product_id"
-                                    context="{'default_detailed_type': 'product'}"
+                                    context="{'default_is_storable': True}"
                                 />
                                 <field name="product_qty" />
                                 <field name="product_uom_id" />
@@ -35,7 +35,7 @@
                                 />
                                 <field
                                     name="product_consumed_id"
-                                    context="{'default_detailed_type': 'product'}"
+                                    context="{'default_is_storable': True}"
                                     column_invisible="parent.with_bom"
                                 />
                                 <field
@@ -55,7 +55,7 @@
                                     widget="many2many_tags"
                                     options="{'color_field': 'color', 'no_create_edit': True}"
                                 />
-                            </tree>
+                            </list>
                         </field>
                     </page>
                 </notebook>

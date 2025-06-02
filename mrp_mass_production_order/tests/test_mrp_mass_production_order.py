@@ -2,7 +2,7 @@
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
 from odoo import Command
-from odoo.tests.common import Form
+from odoo.tests import Form
 
 from odoo.addons.base.tests.common import BaseCommon
 
