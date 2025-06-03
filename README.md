@@ -26,6 +26,7 @@ addon | version | maintainers | summary
 [mrp_bom_location](mrp_bom_location/) | 18.0.1.1.1 |  | Adds location field to Bill of Materials and its components.
 [mrp_bom_note](mrp_bom_note/) | 18.0.1.0.0 |  | Notes in Bill of Materials
 [mrp_bom_tracking](mrp_bom_tracking/) | 18.0.1.0.0 |  | Logs any change to a BoM in the chatter
+[mrp_bom_widget_section_and_note_one2many](mrp_bom_widget_section_and_note_one2many/) | 18.0.1.0.0 | [![quentinDupont](https://github.com/quentinDupont.png?size=30px)](https://github.com/quentinDupont) | Add section and note in Bills of Materials
 [mrp_lot_production_date](mrp_lot_production_date/) | 18.0.1.0.0 |  | MRP Lot Production Date
 [mrp_multi_level](mrp_multi_level/) | 18.0.1.0.4 | [![JordiBForgeFlow](https://github.com/JordiBForgeFlow.png?size=30px)](https://github.com/JordiBForgeFlow) [![LoisRForgeFlow](https://github.com/LoisRForgeFlow.png?size=30px)](https://github.com/LoisRForgeFlow) | Adds an MRP Scheduler
 [mrp_multi_level_estimate](mrp_multi_level_estimate/) | 18.0.1.0.0 | [![LoisRForgeFlow](https://github.com/LoisRForgeFlow.png?size=30px)](https://github.com/LoisRForgeFlow) | Allows to consider demand estimates using MRP multi level.
