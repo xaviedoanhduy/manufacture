@@ -38,6 +38,6 @@ class StockRule(models.Model):
                 [("lot_producing_id", "=", lot_id)]
             )
             if existing_mo:
-                mo_name = "%s-%s" % (mo_name, len(existing_mo))
+                mo_name = f"{mo_name}-{len(existing_mo)}"
             vals["name"] = mo_name
         return vals

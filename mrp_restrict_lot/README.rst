@@ -69,6 +69,7 @@ Contributors
 ------------
 
 -  Florian da Costa <florian.dacosta@akretion.com>
+-  Raphaël Reverdy <raphael.reverdy@akretion.com>>
 
 Maintainers
 -----------

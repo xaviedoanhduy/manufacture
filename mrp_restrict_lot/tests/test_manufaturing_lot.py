@@ -67,4 +67,4 @@ class TestRestrictLot(TransactionCase):
         )
         move._action_confirm()
         mo = move.move_orig_ids.production_id
-        self.assertEqual(mo.name, "%s-%s" % (lot.name, 1))
+        self.assertEqual(mo.name, f"{lot.name}-1")
