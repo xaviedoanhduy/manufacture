@@ -14,7 +14,7 @@ class MrpProduction(models.Model):
         location_id = location_dest._get_putaway_strategy(product)
         if location_id:
             vals["location_dest_id"] = location_id.id
-        mo = super(MrpProduction, self).create(vals)
+        mo = super().create(vals)
         if location_id:
             message = (
                 _(

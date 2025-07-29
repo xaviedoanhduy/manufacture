@@ -6,7 +6,7 @@ from odoo.tests.common import TransactionCase
 
 class MrpProductionCase(TransactionCase):
     def setUp(self, *args, **kwargs):
-        super(MrpProductionCase, self).setUp(*args, **kwargs)
+        super().setUp(*args, **kwargs)
 
         self.warehouse = self.env["stock.warehouse"].create(
             {
