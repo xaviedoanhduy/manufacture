@@ -39,6 +39,7 @@ addon | version | maintainers | summary
 [mrp_production_auto_validate](mrp_production_auto_validate/) | 18.0.1.0.0 | <a href='https://github.com/sebalix'><img src='https://github.com/sebalix.png' width='32' height='32' style='border-radius:50%;' alt='sebalix'/></a> | Manufacturing Order Auto-Validation when components are picked
 [mrp_production_back_to_draft](mrp_production_back_to_draft/) | 18.0.1.0.0 |  | Allows to return to draft a confirmed or cancelled MO.
 [mrp_production_note](mrp_production_note/) | 18.0.1.0.0 |  | Notes in production orders
+[mrp_production_picking_type_from_route](mrp_production_picking_type_from_route/) | 18.0.1.0.0 |  | Updates the operation type creating MO based on the product
 [mrp_repair_order](mrp_repair_order/) | 18.0.1.0.0 | <a href='https://github.com/peluko00'><img src='https://github.com/peluko00.png' width='32' height='32' style='border-radius:50%;' alt='peluko00'/></a> | Create repair order from manufacturing order
 [mrp_sale_info](mrp_sale_info/) | 18.0.1.0.0 |  | Adds sale information to Manufacturing models
 [mrp_subcontracting_inhibit](mrp_subcontracting_inhibit/) | 18.0.1.0.0 | <a href='https://github.com/victoralmau'><img src='https://github.com/victoralmau.png' width='32' height='32' style='border-radius:50%;' alt='victoralmau'/></a> | Inhibit subcontracting flow on demand
