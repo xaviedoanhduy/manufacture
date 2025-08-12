@@ -23,7 +23,7 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [account_move_line_mrp_info](account_move_line_mrp_info/) | 18.0.1.0.0 |  | Account Move Line Mrp Info
 [mrp_attachment_mgmt](mrp_attachment_mgmt/) | 18.0.1.0.0 | <a href='https://github.com/victoralmau'><img src='https://github.com/victoralmau.png' width='32' height='32' style='border-radius:50%;' alt='victoralmau'/></a> | Mrp Attachment Mgmt
-[mrp_bom_attribute_match](mrp_bom_attribute_match/) | 18.0.1.0.0 |  | Dynamic BOM component based on product attribute
+[mrp_bom_attribute_match](mrp_bom_attribute_match/) | 18.0.1.0.2 |  | Dynamic BOM component based on product attribute
 [mrp_bom_component_menu](mrp_bom_component_menu/) | 18.0.1.0.0 |  | MRP BOM Component Menu
 [mrp_bom_image](mrp_bom_image/) | 18.0.1.0.0 |  | Add product Images to BoM
 [mrp_bom_line_formula_quantity](mrp_bom_line_formula_quantity/) | 18.0.1.0.0 | <a href='https://github.com/SirAionTech'><img src='https://github.com/SirAionTech.png' width='32' height='32' style='border-radius:50%;' alt='SirAionTech'/></a> | Compute the quantity of a Production Line using a formula in the BoM Line.
