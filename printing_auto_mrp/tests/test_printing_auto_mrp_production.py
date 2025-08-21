@@ -10,7 +10,6 @@ from odoo.addons.printing_auto_base.tests.common import (
 )
 
 
-@patch_print_document()
 class TestAutoPrinting(TestPrintingAutoCommon):
     @classmethod
     def setUpReportAndRecord(cls):
@@ -25,17 +24,24 @@ class TestAutoPrinting(TestPrintingAutoCommon):
         self._create_attachment(self.record, self.data, "1")
         self.record.picking_type_id.auto_printing_ids |= self.printing_auto
 
+    @patch_print_document()
     def test_button_mark_done_printing_auto(self):
         self.printing_auto.printer_id = self.printer_1
         self.record.button_mark_done()
         self.assertFalse(self.record.printing_auto_error)
+        kwargs = {"report": None, "content": self.data, "printer": self.printer_1}
+        self.printer_1.print_document.assert_called_once_with(**kwargs)
 
+    @patch_print_document()
     def test_button_mark_done_printing_error_log(self):
         with mute_logger("odoo.addons.printing_auto_base.models.printing_auto_mixin"):
             self.record.button_mark_done()
         self.assertTrue(self.record.printing_auto_error)
+        self.printer_1.print_document.assert_not_called()
 
+    @patch_print_document()
     def test_button_mark_done_printing_error_raise(self):
         self.printing_auto.action_on_error = "raise"
         with self.assertRaises(UserError):
             self.record.button_mark_done()
+        self.printer_1.print_document.assert_not_called()
