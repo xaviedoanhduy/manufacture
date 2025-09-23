@@ -52,7 +52,7 @@ addon | version | maintainers | summary
 [mrp_unbuild_valuation_layer_link](mrp_unbuild_valuation_layer_link/) | 18.0.1.0.0 |  | Unbuild orders display the connected valuation layers
 [mrp_warehouse_calendar](mrp_warehouse_calendar/) | 18.0.1.0.1 | <a href='https://github.com/JordiBForgeFlow'><img src='https://github.com/JordiBForgeFlow.png' width='32' height='32' style='border-radius:50%;' alt='JordiBForgeFlow'/></a> | Considers the warehouse calendars in manufacturing
 [printing_auto_mrp](printing_auto_mrp/) | 18.0.1.0.0 |  | Printing Auto MRP
-[quality_control_oca](quality_control_oca/) | 18.0.1.0.1 |  | Generic infrastructure for quality tests.
+[quality_control_oca](quality_control_oca/) | 18.0.1.1.0 |  | Generic infrastructure for quality tests.
 [quality_control_stock_oca](quality_control_stock_oca/) | 18.0.1.0.1 |  | Quality control - Stock (OCA)
 
 [//]: # (end addons)
