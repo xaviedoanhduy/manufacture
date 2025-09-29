@@ -6,7 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: Automatically generated\n"
+"PO-Revision-Date: 2025-09-29 10:37+0000\n"
+"Last-Translator: vladimiruvid <vladimir@uvid.hr>\n"
 "Language-Team: none\n"
 "Language: hr\n"
 "MIME-Version: 1.0\n"
@@ -14,40 +15,41 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.10.4\n"
 
 #. module: mrp_sale_info
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_production__commitment_date
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_workorder__commitment_date
 msgid "Commitment Date"
-msgstr ""
+msgstr "Datum dostave"
 
 #. module: mrp_sale_info
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_production__partner_id
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_workorder__partner_id
 msgid "Customer"
-msgstr ""
+msgstr "Kupac"
 
 #. module: mrp_sale_info
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_production__client_order_ref
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_workorder__client_order_ref
 msgid "Customer Reference"
-msgstr ""
+msgstr "Referenca kupca"
 
 #. module: mrp_sale_info
 #: model:ir.model,name:mrp_sale_info.model_mrp_production
 msgid "Manufacturing Order"
-msgstr ""
+msgstr "Nalog za proizvodnju"
 
 #. module: mrp_sale_info
 #: model_terms:ir.ui.view,arch_db:mrp_sale_info.mrp_production_workorder_form_view_inherit
 msgid "Sale information"
-msgstr ""
+msgstr "Prodajne informacije"
 
 #. module: mrp_sale_info
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_production__sale_id
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_workorder__sale_id
 msgid "Sale order"
-msgstr ""
+msgstr "Prodajni nalog"
 
 #. module: mrp_sale_info
 #: model:ir.model.fields,field_description:mrp_sale_info.field_mrp_production__source_procurement_group_id
@@ -66,8 +68,11 @@ msgid ""
 "This is the delivery date promised to the customer. If set, the delivery "
 "order will be scheduled based on this date rather than product lead times."
 msgstr ""
+"Ovo je datum isporuke obećan kupcu. Ako je postavljen, narudžba isporuke bit "
+"će zakazana na temelju ovog datuma, a ne na temelju vremena isporuke "
+"proizvoda."
 
 #. module: mrp_sale_info
 #: model:ir.model,name:mrp_sale_info.model_mrp_workorder
 msgid "Work Order"
-msgstr ""
+msgstr "Radni nalog"
