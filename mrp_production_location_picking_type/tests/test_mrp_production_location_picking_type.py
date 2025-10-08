@@ -35,7 +35,7 @@ class TestMrpProductionLocationPickingType(TransactionCase):
         self.finished_product = self.product_model.create(
             {
                 "name": "Finished Product",
-                "type": "product",
+                "is_storable": True,
                 "uom_id": self.env.ref("uom.product_uom_unit").id,
                 "uom_po_id": self.env.ref("uom.product_uom_unit").id,
             }
@@ -43,7 +43,7 @@ class TestMrpProductionLocationPickingType(TransactionCase):
         self.component_product = self.product_model.create(
             {
                 "name": "Component Product",
-                "type": "product",
+                "is_storable": True,
                 "uom_id": self.env.ref("uom.product_uom_unit").id,
                 "uom_po_id": self.env.ref("uom.product_uom_unit").id,
             }

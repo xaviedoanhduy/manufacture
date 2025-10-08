@@ -12,5 +12,6 @@ class StockPickingType(models.Model):
         string="Production Location",
         help="Default production location for manufacturing operations "
         "using this operation type.",
-        domain="[('usage', '=', 'production'), ('company_id', 'in', [company_id, False])]",
+        domain="[('usage', '=', 'production'),"
+        " ('company_id', 'in', [company_id, False])]",
     )
