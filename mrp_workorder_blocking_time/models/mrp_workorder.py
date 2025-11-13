@@ -22,7 +22,7 @@ class MrpWorkorder(models.Model):
                 and wo.operation_id.blocking_stage is True
             ):
                 raise UserError(_("You cannot remove a blocking operation!"))
-        return super(MrpWorkorder, self).unlink()
+        return super().unlink()
 
     def button_start(self):
         res = super().button_start()
