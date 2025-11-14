@@ -25,23 +25,23 @@
                         <div class="text-muted">
                             If time recorded on workorder is not between this percentages, projected time will be used instead
                          </div>
-                         <div
+                        <div
                             class="content-group"
                             attrs="{'invisible': [('use_projected_time_work_orders','=',False)]}"
                         >
                             <div class="mt16">
                                 Minimum:
                                 <field
-                                    name="minimum_order_time_threshold"
-                                    class="oe_inline"
-                                /> %
+                                name="minimum_order_time_threshold"
+                                class="oe_inline"
+                            /> %
                             </div>
                             <div class="mt16">
                                 Maximum:
                                 <field
-                                    name="maximum_order_time_threshold"
-                                    class="oe_inline"
-                                /> %
+                                name="maximum_order_time_threshold"
+                                class="oe_inline"
+                            /> %
                             </div>
                         </div>
                     </div>

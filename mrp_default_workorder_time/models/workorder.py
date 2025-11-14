@@ -9,7 +9,6 @@ from odoo.tools import float_compare
 
 
 class MrpWorkOrder(models.Model):
-
     _inherit = "mrp.workorder"
 
     def add_time_to_work_order(self, fully_productive_time):
