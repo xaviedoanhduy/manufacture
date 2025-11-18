@@ -5,47 +5,31 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="mrp.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='security_lead_time']" position="after">
-                <div class="col-lg-6 col-12 o_setting_box" id="security_lead_time">
-                    <div class="o_setting_left_pane">
-                        <field name="use_projected_time_work_orders" />
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label
-                            string="Record standard projected order time"
-                            for="minimum_order_time_threshold"
-                        />
-                        <span
-                            class="fa fa-lg fa-building-o"
-                            title="Values set here are company-specific."
-                            role="img"
-                            aria-label="Values set here are company-specific."
-                            groups="base.group_multi_company"
-                        />
-                        <div class="text-muted">
-                            If time recorded on workorder is not between this percentages, projected time will be used instead
-                         </div>
-                        <div
-                            class="content-group"
-                            attrs="{'invisible': [('use_projected_time_work_orders','=',False)]}"
-                        >
-                            <div class="mt16">
-                                Minimum:
-                                <field
-                                name="minimum_order_time_threshold"
-                                class="oe_inline"
-                            /> %
-                            </div>
-                            <div class="mt16">
-                                Maximum:
-                                <field
-                                name="maximum_order_time_threshold"
-                                class="oe_inline"
-                            /> %
-                            </div>
+            <xpath expr="//setting[@id='security_lead_time']" position="after">
+                <setting
+                    id="security_lead_time"
+                    string="Record standard projected order time"
+                    help="If time recorded on workorder is not between this percentages, projected time will be used instead"
+                >
+                    <field name="use_projected_time_work_orders" />
+                    <div
+                        class="content-group"
+                        invisible="not use_projected_time_work_orders"
+                    >
+                        <div class="mt16">
+                            Minimum <field
+                            name="minimum_order_time_threshold"
+                            widget="integer"
+                        /> %
+                        </div>
+                        <div class="mt16">
+                            Maximum <field
+                            name="maximum_order_time_threshold"
+                            widget="integer"
+                        /> %
                         </div>
                     </div>
-                </div>
+                </setting>
             </xpath>
         </field>
     </record>

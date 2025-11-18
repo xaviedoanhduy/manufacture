@@ -3,7 +3,7 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import _, models
+from odoo import Command, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
 
@@ -13,18 +13,15 @@ class MrpWorkOrder(models.Model):
 
     def add_time_to_work_order(self, fully_productive_time):
         self.ensure_one()
-        # self._compute_duration()
-        date_start = self.date_planned_start
+        date_start = self.date_start
         if not date_start:
             raise UserError(
-                _(
+                self.env._(
                     "You should plan orders to set default "
                     "production time on work orders, please check"
                 )
             )
-        date_end = self.date_planned_start + relativedelta(
-            minutes=self.duration_expected
-        )
+        date_end = self.date_start + relativedelta(minutes=self.duration_expected)
         if self.time_ids:
             minutes_to_add = self.duration_expected - self.duration
             if float_compare(minutes_to_add, 0, precision_digits=6) == -1:
@@ -34,9 +31,7 @@ class MrpWorkOrder(models.Model):
         self.write(
             {
                 "time_ids": [
-                    (
-                        0,
-                        0,
+                    Command.create(
                         {
                             "user_id": self.env.user.id,
                             "date_start": date_start,
@@ -64,7 +59,7 @@ class MrpWorkOrder(models.Model):
         )
         if not fully_productive_time:
             raise UserError(
-                _(
+                self.env._(
                     "Fully Productive Time is not configured on system, "
                     "please contact with your administrator"
                 )
@@ -80,9 +75,6 @@ class MrpWorkOrder(models.Model):
             )
             and x.production_id.company_id.use_projected_time_work_orders
         ):
-            # FIX ME: this is because duration expected use this field to compute
-            workorder.qty_production = workorder.qty_produced
-            workorder.duration_expected = workorder._get_duration_expected()
             workorder.add_time_to_work_order(fully_productive_time)
             if (
                 100 - workorder.duration_percent
