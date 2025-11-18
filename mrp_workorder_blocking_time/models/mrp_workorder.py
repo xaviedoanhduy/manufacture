@@ -28,7 +28,8 @@ class MrpWorkorder(models.Model):
         res = super().button_start()
         if self.operation_id and self.operation_id.blocking_stage is True:
             # calculate the end of the blocking stage based on :
-            # the recommended_blocking_time from operation_id + the start date of the work order
+            # the recommended_blocking_time from operation_id
+            # + the start date of the work order
             blocking_stage_end = self.date_start + timedelta(
                 hours=self.operation_id.recommended_blocking_time
             )
@@ -39,7 +40,7 @@ class MrpWorkorder(models.Model):
         action = self.env.ref(
             "mrp_workorder_blocking_time.mrp_workorder_blocking_reason_wizard_act_window"
         ).read()[0]
-        action["context"] = {"active_id": self.id, "action_to_do": action_to_do}
+        action["context"] = {"id": self.id, "action_to_do": action_to_do}
         return action
 
     def _check_blocking_time_done(self):

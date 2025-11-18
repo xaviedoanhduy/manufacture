@@ -4,7 +4,7 @@
 {
     "name": "MRP Work Order Blocking Time",
     "category": "Manufacturing",
-    "version": "15.0.0.1.0",
+    "version": "18.0.1.0.0",
     "summary": "Allow to block time on work orders",
     "author": "Camptocamp, Odoo Community Association (OCA)",
     "website": "https://github.com/OCA/manufacture",

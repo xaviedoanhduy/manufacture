@@ -9,10 +9,10 @@
                 <field name="blocking_stage" />
                 <label
                     for="recommended_blocking_time"
-                    attrs="{'invisible': [('blocking_stage', '=', False)]}"
+                    invisible="not blocking_stage"
                     string="Rec. Blocking Time"
                 />
-                <div attrs="{'invisible': [('blocking_stage', '=', False)]}">
+                <div invisible="not blocking_stage">
                     <field
                     name="recommended_blocking_time"
                     widget="float_time"

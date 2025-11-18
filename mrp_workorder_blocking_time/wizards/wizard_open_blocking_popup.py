@@ -17,7 +17,7 @@ class WizardBlockingReason(models.TransientModel):
         if not action_to_do:
             raise UserError(_("No action to do"))
         workorder_obj = self.env["mrp.workorder"]
-        workorder = workorder_obj.browse(self.env.context.get("active_id"))
+        workorder = workorder_obj.browse(self.env.context.get("id"))
         workorder.interruption_reason = self.interruption_reason
         workorder.blocking_period_interrupted = bool(self.interruption_reason)
         if hasattr(workorder, action_to_do):

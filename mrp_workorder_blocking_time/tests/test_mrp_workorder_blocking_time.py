@@ -25,13 +25,15 @@ class TestMrpWorkorderBlockingTime(TransactionCase):
         cls.product_to_build = cls.env["product.product"].create(
             {
                 "name": "Young Tom",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
             }
         )
         cls.product_to_use_1 = cls.env["product.product"].create(
             {
                 "name": "Botox",
-                "type": "product",
+                "type": "consu",
+                "is_storable": True,
             }
         )
         cls.bom_1 = cls.env["mrp.bom"].create(
@@ -114,7 +116,7 @@ class TestMrpWorkorderBlockingTime(TransactionCase):
         self.assertIsInstance(is_popup, dict)
 
         wizard_obj = self.env["mrp.workorder.blocking.reason.wizard"].with_context(
-            active_id=workorder.id, action_to_do="button_pending"
+            id=workorder.id, action_to_do="button_pending"
         )
         wizard_id = wizard_obj.create(
             {"interruption_reason": "Test reason button_pending"}
@@ -143,7 +145,7 @@ class TestMrpWorkorderBlockingTime(TransactionCase):
         self.assertIsInstance(is_popup, dict)
 
         wizard_obj = self.env["mrp.workorder.blocking.reason.wizard"].with_context(
-            active_id=workorder.id, action_to_do="button_finish"
+            id=workorder.id, action_to_do="button_finish"
         )
         wizard_id = wizard_obj.create(
             {"interruption_reason": "Test reason button_finish"}
