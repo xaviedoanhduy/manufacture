@@ -14,12 +14,6 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: mrp_byproduct_auto_create_lot
-#: model:ir.model.fields,field_description:mrp_byproduct_auto_create_lot.field_product_product__auto_create_lot
-#: model:ir.model.fields,field_description:mrp_byproduct_auto_create_lot.field_product_template__auto_create_lot
-msgid "Auto Create Lot"
-msgstr ""
-
-#. module: mrp_byproduct_auto_create_lot
-#: model:ir.model,name:mrp_byproduct_auto_create_lot.model_product_template
-msgid "Product"
+#: model:ir.model,name:mrp_byproduct_auto_create_lot.model_mrp_production
+msgid "Manufacturing Order"
 msgstr ""
