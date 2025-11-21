@@ -8,11 +8,8 @@ from odoo import fields, models
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    production_ids = fields.Many2many(
+    production_ids = fields.One2many(
         comodel_name="mrp.production",
-        relation="sale_line_production_rel",
-        column1="line_id",
-        column2="production_id",
+        inverse_name="sale_line_id",
         string="Manufacturing orders",
-        copy=False,
     )
