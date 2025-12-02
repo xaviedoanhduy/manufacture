@@ -8,7 +8,7 @@ from odoo import fields, models
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
-    production_ids = fields.One2many(
+    mrp_production_ids = fields.One2many(
         comodel_name="mrp.production",
         inverse_name="sale_line_id",
         string="Manufacturing orders",
