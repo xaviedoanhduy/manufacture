@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.mrp</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="mrp.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@id='security_lead_time']" position="after">
+                <setting
+                    id="security_lead_time"
+                    string="Record standard projected order time"
+                    help="If time recorded on workorder is not between this percentages, projected time will be used instead"
+                >
+                    <field name="use_projected_time_work_orders" />
+                    <div
+                        class="content-group"
+                        invisible="not use_projected_time_work_orders"
+                    >
+                        <div class="mt16">
+                            Minimum <field
+                            name="minimum_order_time_threshold"
+                            widget="integer"
+                        /> %
+                        </div>
+                        <div class="mt16">
+                            Maximum <field
+                            name="maximum_order_time_threshold"
+                            widget="integer"
+                        /> %
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
